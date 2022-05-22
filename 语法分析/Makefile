@@ -6,3 +6,9 @@ sysy.tab.c: sysy.y
 
 lex.yy.c: sysy.l
 	flex sysy.l
+
+clean:
+	rm parser
+	rm sysy.tab.c
+	rm sysy.tab.h
+	rm lex.yy.c

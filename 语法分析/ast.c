@@ -1,6 +1,6 @@
  #include "def.h"
-struct node * mknode(int kind,struct node *first,struct node *second, struct node *third,int pos, struct node *forth) {
-  struct node *T=(struct node *)malloc(sizeof(struct node));
+node* mknodes(int kind,node *first,node *second, node *third,int pos, node *forth) {
+  node* T=(node*)malloc(sizeof(node));
   T->kind=kind;
   T->ptr[0]=first;
   T->ptr[1]=second;
@@ -10,9 +10,9 @@ struct node * mknode(int kind,struct node *first,struct node *second, struct nod
   return T;
 }
 
-void display(struct node *T,int indent)  {//对抽象语法树的先根遍历
+void display(node *T,int indent)  {//对抽象语法树的先根遍历
   int i=1;
-  struct node *T0;
+  node *T0;
   if (T)
 	{
 	switch (T->kind) {
@@ -155,7 +155,7 @@ void display(struct node *T,int indent)  {//对抽象语法树的先根遍历
                     break;
 	case ARGS:      i=1;
                     while (T) {  //ARGS表示实际参数表达式序列结点，其第一棵子树为其一个实际参数表达式，第二棵子树为剩下的。
-                        struct node *T0=T->ptr[0];
+                        node *T0=T->ptr[0];
                         printf("%*c第%d个实际参数表达式：\n",indent,' ',i++);
                         display(T0,indent+3);
                         T=T->ptr[1];

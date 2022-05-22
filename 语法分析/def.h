@@ -4,7 +4,7 @@
 #include "stdarg.h"
 #include "sysy.tab.h"
 
-enum node_kind  { EXT_DEF_LIST,EXT_VAR_DEF,FUNC_DEF,FUNC_DEC,EXT_DEC_LIST,PARAM_LIST,PARAM_DEC,                   VAR_DEF,DEC_LIST,DEF_LIST,COMP_STM,STM_LIST,EXP_STMT,IF_THEN,IF_THEN_ELSE, FUNC_CALL,ARGS, FUNCTION,PARAM,ARG,CALL,LABEL,GOTO,JLT,JLE,JGT,JGE,EQ,NEQ,ARRAY_ARGS,ARRAY_ARGS_LIST,ARRAY,RETURN_N};
+enum node_kind  { EXT_DEF_LIST,EXT_VAR_DEF,FUNC_DEF,FUNC_DEC,EXT_DEC_LIST,PARAM_LIST,PARAM_DEC,VAR_DEF,DEC_LIST,DEF_LIST,COMP_STM,STM_LIST,EXP_STMT,IF_THEN,IF_THEN_ELSE, FUNC_CALL,ARGS, FUNCTION,PARAM,ARG,CALL,LABEL,GOTO,JLT,JLE,JGT,JGE,EQ,NEQ,ARRAY_ARGS,ARRAY_ARGS_LIST,ARRAY,RETURN_N};
 extern char filename[50]; 
 extern int has_syntacc_err;
 #define MAXLENGTH   1000    //定义符号表的大小
@@ -29,14 +29,14 @@ struct codenode {   //三地址TAC代码结点,采用双向循环链表存放中
         struct codenode  *next,*prior;
          };
 
-struct node {    //以下对结点属性定义没有考虑存储效率，只是简单地列出要用到的一些属性
+typedef struct n{    //以下对结点属性定义没有考虑存储效率，只是简单地列出要用到的一些属性
 	enum node_kind kind;               //结点类型
 	union {
 		  char type_id[33];             //由标识符生成的叶结点
 		  int type_int;                 //由整常数生成的叶结点
 		  float type_float;              //由浮点常数生成的叶结点
 	      };
-    struct node *ptr[3];                   //子树指针，由kind确定有多少棵子树
+    struct n *ptr[4];                   //子树指针，由kind确定有多少棵子树
     int level;                    //层号
     int place;                    //表示结点对应的变量或运算结果临时变量在符号表的位置序号
     char Etrue[15],Efalse[15];      //对布尔表达式的翻译时，真假转移目标的标号
@@ -47,7 +47,7 @@ struct node {    //以下对结点属性定义没有考虑存储效率，只是�
     int pos;                     //语法单位所在位置行号
     int offset;                   //偏移量
     int width;                   //各种数据占用的字节数
-    };
+} node;
 
 struct symbol {  //这里只列出了一个符号表项的部分属性，没考虑属性间的互斥
     char name[33];     //变量或函数名
@@ -72,12 +72,12 @@ struct symbol_scope_begin {  /*当前作用域的符号在符号表的起始位�
     } symbol_scope_TX;
 
 
-struct node * mknode(int kind,struct node *first,struct node *second, struct node *third,int pos, struct node *forth);
+node* mknodes(int kind,node *first,node *second, node *third,int pos, node *forth);
 
 // 为语义分析和代码生成预留 
-void semantic_Analysis0(struct node *T);
-void semantic_Analysis(struct node *T);
-void boolExp(struct node *T);
-void Exp(struct node *T);
+void semantic_Analysis0(node *T);
+void semantic_Analysis(node *T);
+void boolExp(node *T);
+void Exp(node *T);
 void objectCode(struct codenode *head);
 
