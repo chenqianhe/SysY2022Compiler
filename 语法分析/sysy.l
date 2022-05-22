@@ -52,8 +52,8 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 "&&"         {return AND;}
 "||"            {return OR;}
 "!"			{return NOT;}
-"[" {printf("%s : LB\n", yytext); return LB;}
-"]" {printf("%s : RB\n", yytext); return RB;}
+"["                     {return LB;}
+"]"                     {return RB;}
 "("			{return LP;}
 ")"			{return RP;}
 "{"			{return LC;}
